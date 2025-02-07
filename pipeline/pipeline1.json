@@ -107,6 +107,7 @@
 					},
 					"sink": {
 						"type": "SnowflakeV2Sink",
+						"preCopyScript": "Truncate TEMP_SCHEMA.PET_LICENSE_STAGE",
 						"importSettings": {
 							"type": "SnowflakeImportCopyCommand"
 						}
