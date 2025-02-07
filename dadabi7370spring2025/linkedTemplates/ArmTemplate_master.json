@@ -1,0 +1,84 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "dadabi7370spring2025"
+		},
+		"AzureDataLakeStorage_LS_accountKey": {
+			"type": "secureString",
+			"metadata": "Secure string for 'accountKey' of 'AzureDataLakeStorage_LS'"
+		},
+		"IS_Snowflake_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'IS_Snowflake'"
+		},
+		"AzureDataLakeStorage_LS_properties_typeProperties_url": {
+			"type": "string",
+			"defaultValue": "https://dadabispring2025.dfs.core.windows.net/"
+		},
+		"IS_Snowflake_properties_typeProperties_database": {
+			"type": "string",
+			"defaultValue": "TEMP_DB"
+		},
+		"IS_Snowflake_properties_typeProperties_role": {
+			"type": "string",
+			"defaultValue": "TEMP_ROLE"
+		},
+		"Is_stgblobspring2025_sasUri": {
+			"type": "secureString",
+			"metadata": "Secure string for 'sasUri' of 'Is_stgblobspring2025'"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "dadabi7370spring2025_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2024-03-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"AzureDataLakeStorage_LS_accountKey": {
+						"value": "[parameters('AzureDataLakeStorage_LS_accountKey')]"
+					},
+					"IS_Snowflake_password": {
+						"value": "[parameters('IS_Snowflake_password')]"
+					},
+					"AzureDataLakeStorage_LS_properties_typeProperties_url": {
+						"value": "[parameters('AzureDataLakeStorage_LS_properties_typeProperties_url')]"
+					},
+					"IS_Snowflake_properties_typeProperties_database": {
+						"value": "[parameters('IS_Snowflake_properties_typeProperties_database')]"
+					},
+					"IS_Snowflake_properties_typeProperties_role": {
+						"value": "[parameters('IS_Snowflake_properties_typeProperties_role')]"
+					},
+					"Is_stgblobspring2025_sasUri": {
+						"value": "[parameters('Is_stgblobspring2025_sasUri')]"
+					}
+				}
+			},
+			"dependsOn": []
+		}
+	]
+}
