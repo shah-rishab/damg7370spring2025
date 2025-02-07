@@ -37,7 +37,7 @@
 	},
 	"resources": [
 		{
-			"name": "[concat(parameters('factoryName'), '/pipeline1')]",
+			"name": "[concat(parameters('factoryName'), '/PL_TSV_2_PARQUET')]",
 			"type": "Microsoft.DataFactory/factories/pipelines",
 			"apiVersion": "2018-06-01",
 			"properties": {
@@ -131,7 +131,7 @@
 										}
 									},
 									{
-										"name": "Job_Load_Date",
+										"name": "LOAD_DT",
 										"value": {
 											"value": "@utcNow()",
 											"type": "Expression"
@@ -237,7 +237,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "SeattlePetLicenses (3).tsv",
+						"fileName": "seattle_pet_lic_ds.tsv",
 						"fileSystem": "bronze"
 					},
 					"columnDelimiter": "\t",
@@ -294,7 +294,7 @@
 				"typeProperties": {
 					"location": {
 						"type": "AzureBlobFSLocation",
-						"fileName": "SeattlePetLicenses (3).parquet",
+						"fileName": "seattle_pet_lic_ds.parquet",
 						"fileSystem": "silver"
 					},
 					"compressionCodec": "snappy"
