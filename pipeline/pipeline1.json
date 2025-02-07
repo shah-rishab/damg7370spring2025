@@ -98,7 +98,7 @@
 					"enableStaging": true,
 					"stagingSettings": {
 						"linkedServiceName": {
-							"referenceName": "IS_stgblobspring2025",
+							"referenceName": "AzureBlobStorage1",
 							"type": "LinkedServiceReference"
 						}
 					}
