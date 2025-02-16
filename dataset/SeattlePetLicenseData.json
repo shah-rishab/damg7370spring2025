@@ -19,7 +19,9 @@
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation"
+				"type": "AzureBlobFSLocation",
+				"fileName": "Seattle_Pet_Licenses (1).tsv",
+				"fileSystem": "bronze"
 			},
 			"columnDelimiter": "\t",
 			"escapeChar": "\\",
