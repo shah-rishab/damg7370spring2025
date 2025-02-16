@@ -9,12 +9,22 @@
 						"referenceName": "DelimitedText6",
 						"type": "DatasetReference"
 					},
-					"name": "source1"
+					"name": "readTSV"
 				}
 			],
 			"sinks": [],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "TransposeColumns"
+				},
+				{
+					"name": "PickRequiredColumns"
+				}
+			],
 			"scriptLines": [
+				"parameters{",
+				"     Job_Id as string (\"10\")",
+				"}",
 				"source(output(",
 				"          {License Issue Date} as string,",
 				"          {License Number} as string,",
@@ -26,7 +36,26 @@
 				"     ),",
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     ignoreNoFilesFound: false) ~> source1"
+				"     ignoreNoFilesFound: false) ~> readTSV",
+				"readTSV derive(LIC_ISSUE_DATE = toDate({License Issue Date}, 'MMMM dd yyyy'),",
+				"          Secondary_Breed = iifNull({Secondary Breed}, 'Unknown'),",
+				"          ZIP_Code = lpad(toString({ZIP Code}),5,'0'),",
+				"          Species = upper(Species),",
+				"          License_Number = toInteger(translate({License Number},'S','')),",
+				"          Animal_Name = translate({Animal's Name}, '()[]',''),",
+				"          Job_ID = $Job_Id,",
+				"          Load_Dt = currentDate()) ~> TransposeColumns",
+				"TransposeColumns select(mapColumn(",
+				"          Species,",
+				"          {Primary Breed},",
+				"          LIC_ISSUE_DATE,",
+				"          Secondary_Breed,",
+				"          ZIP_Code,",
+				"          License_Number,",
+				"          Animal_Name",
+				"     ),",
+				"     skipDuplicateMapInputs: false,",
+				"     skipDuplicateMapOutputs: false) ~> PickRequiredColumns"
 			]
 		}
 	}
