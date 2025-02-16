@@ -1,0 +1,27 @@
+{
+	"name": "dataflow1",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "SeattlePetLicensesData",
+						"type": "DatasetReference"
+					},
+					"name": "readTSVData"
+				}
+			],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          {License Issue Date     License Number     Animal's Name     Species     Primary Breed     Secondary Breed     ZIP Code} as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> readTSVData"
+			]
+		}
+	}
+}
