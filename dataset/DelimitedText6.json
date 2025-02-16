@@ -20,7 +20,31 @@
 		},
 		"schema": [
 			{
-				"name": "License Issue Date\tLicense Number\tAnimal's Name\tSpecies\tPrimary Breed\tSecondary Breed\tZIP Code",
+				"name": "License Issue Date",
+				"type": "String"
+			},
+			{
+				"name": "License Number",
+				"type": "String"
+			},
+			{
+				"name": "Animal's Name",
+				"type": "String"
+			},
+			{
+				"name": "Species",
+				"type": "String"
+			},
+			{
+				"name": "Primary Breed",
+				"type": "String"
+			},
+			{
+				"name": "Secondary Breed",
+				"type": "String"
+			},
+			{
+				"name": "ZIP Code",
 				"type": "String"
 			}
 		]
