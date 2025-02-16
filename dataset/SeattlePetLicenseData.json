@@ -30,7 +30,31 @@
 		},
 		"schema": [
 			{
-				"name": "License_Issue_Date\tLicense_Number\tAnimal_Name\tSpecies\tPrimary_Breed\tSecondary_Breed\tZIP_Code",
+				"name": "License_Issue_Date",
+				"type": "String"
+			},
+			{
+				"name": "License_Number",
+				"type": "String"
+			},
+			{
+				"name": "Animal_Name",
+				"type": "String"
+			},
+			{
+				"name": "Species",
+				"type": "String"
+			},
+			{
+				"name": "Primary_Breed",
+				"type": "String"
+			},
+			{
+				"name": "Secondary_Breed",
+				"type": "String"
+			},
+			{
+				"name": "ZIP_Code",
 				"type": "String"
 			}
 		]
