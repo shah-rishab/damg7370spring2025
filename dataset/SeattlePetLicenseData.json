@@ -24,7 +24,6 @@
 				"fileSystem": "bronze"
 			},
 			"columnDelimiter": "\t",
-			"rowDelimiter": "\n",
 			"escapeChar": "\\",
 			"firstRowAsHeader": true,
 			"quoteChar": "\""
