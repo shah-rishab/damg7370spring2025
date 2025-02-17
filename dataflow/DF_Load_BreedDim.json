@@ -127,9 +127,9 @@
 				"          DI_LOAD_DATE as string",
 				"     ),",
 				"     deletable:false,",
-				"     insertable:false,",
+				"     insertable:true,",
 				"     updateable:false,",
-				"     upsertable:true,",
+				"     upsertable:false,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
@@ -139,7 +139,7 @@
 				"          PRIMARY_BREED_NAME = PRIMARY_BREED,",
 				"          SECONDARY_BREED_NAME = SECONDARY_BREED,",
 				"          DI_JOB_ID,",
-				"          DI_LOAD_DATE = DI_CREATED_DATE",
+				"          DI_LOAD_DATE = DI_CreatedDate",
 				"     )) ~> sink1"
 			]
 		}
