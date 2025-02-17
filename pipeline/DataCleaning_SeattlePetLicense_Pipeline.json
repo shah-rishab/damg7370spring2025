@@ -1,5 +1,5 @@
 {
-	"name": "pipeline1",
+	"name": "DataCleaning_SeattlePetLicense_Pipeline",
 	"properties": {
 		"activities": [
 			{
