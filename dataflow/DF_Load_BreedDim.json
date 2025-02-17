@@ -29,7 +29,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "Source_BreedDim",
+						"referenceName": "ds_SourceBreed",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -124,7 +124,7 @@
 				"          PRIMARY_BREED_NAME as string,",
 				"          SECONDARY_BREED_NAME as string,",
 				"          DI_JOB_ID as string,",
-				"          DI_LOAD_DATE as string",
+				"          DI_CREATED_DATE as string",
 				"     ),",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -140,7 +140,7 @@
 				"          PRIMARY_BREED_NAME = PRIMARY_BREED,",
 				"          SECONDARY_BREED_NAME = SECONDARY_BREED,",
 				"          DI_JOB_ID,",
-				"          DI_LOAD_DATE = DI_CreatedDate",
+				"          DI_CREATED_DATE = DI_CreatedDate",
 				"     )) ~> sink1"
 			]
 		}
