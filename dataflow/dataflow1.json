@@ -12,7 +12,22 @@
 					"name": "readTSV"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "SnowflakeTable1",
+						"type": "DatasetReference"
+					},
+					"name": "SinkSnowflake"
+				},
+				{
+					"dataset": {
+						"referenceName": "Parquet1",
+						"type": "DatasetReference"
+					},
+					"name": "SinkParquet"
+				}
+			],
 			"transformations": [
 				{
 					"name": "TransposeColumns"
@@ -52,10 +67,50 @@
 				"          Secondary_Breed,",
 				"          ZIP_Code,",
 				"          License_Number,",
-				"          Animal_Name",
+				"          Animal_Name,",
+				"          Job_ID,",
+				"          Load_Dt",
 				"     ),",
-				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> PickRequiredColumns"
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> PickRequiredColumns",
+				"PickRequiredColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          LICENSE_ISSUE_DATE as string,",
+				"          LICENSE_NUMBER as string,",
+				"          ANIMAL_NAME as string,",
+				"          SPECIES as string,",
+				"          PRIMARY_BREED as string,",
+				"          SECONDARY_BREED as string,",
+				"          ZIP_CODE as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_LOAD_DT as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          LICENSE_ISSUE_DATE = LIC_ISSUE_DATE,",
+				"          LICENSE_NUMBER = License_Number,",
+				"          ANIMAL_NAME = Animal_Name,",
+				"          SPECIES = Species,",
+				"          PRIMARY_BREED = {Primary Breed},",
+				"          SECONDARY_BREED = Secondary_Breed,",
+				"          ZIP_CODE = ZIP_Code,",
+				"          DI_JOB_ID = Job_ID,",
+				"          DI_LOAD_DT = Load_Dt",
+				"     )) ~> SinkSnowflake",
+				"PickRequiredColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'parquet',",
+				"     umask: 0022,",
+				"     preCommands: [],",
+				"     postCommands: [],",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true) ~> SinkParquet"
 			]
 		}
 	}
