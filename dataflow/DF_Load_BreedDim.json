@@ -20,13 +20,21 @@
 				},
 				{
 					"dataset": {
-						"referenceName": "SourceBreedDim",
+						"referenceName": "Source_BreedDim",
 						"type": "DatasetReference"
 					},
 					"name": "sourceBreedDim"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "Source_BreedDim",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "SourceDataWithSK"
@@ -39,9 +47,18 @@
 				},
 				{
 					"name": "filterExistingRows"
+				},
+				{
+					"name": "surrogateKey"
+				},
+				{
+					"name": "derivedColumns"
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     DI_JOB_ID as string (\"59\")",
+				"}",
 				"source(output(",
 				"          LICENSE_ISSUE_DATE as string,",
 				"          LICENSE_NUMBER as string,",
@@ -69,10 +86,6 @@
 				"          SPECIES_NAME as string,",
 				"          PRIMARY_BREED_NAME as string,",
 				"          SECONDARY_BREED_NAME as string,",
-				"          START_DATE as string,",
-				"          END_DATE as string,",
-				"          IS_CURRENT as string,",
-				"          BREED_DK as string,",
 				"          DI_JOB_ID as string,",
 				"          DI_LOAD_DATE as string",
 				"     ),",
@@ -96,7 +109,39 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> jointoTarget",
-				"jointoTarget filter(isNull(SPECIES_NAME)&&isNull(PRIMARY_BREED_NAME)&&isNull(SECONDARY_BREED_NAME)) ~> filterExistingRows"
+				"jointoTarget filter(isNull(SPECIES_NAME)&&isNull(PRIMARY_BREED_NAME)&&isNull(SECONDARY_BREED_NAME)) ~> filterExistingRows",
+				"filterExistingRows keyGenerate(output(RowNum as long),",
+				"     startAt: 1L,",
+				"     stepValue: 1L) ~> surrogateKey",
+				"surrogateKey derive(BREED_SK = toInteger(MAXBREEDSK + RowNum),",
+				"          DI_CreatedDate = currentTimestamp(),",
+				"          DI_JOB_ID = $DI_JOB_ID) ~> derivedColumns",
+				"derivedColumns sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          BREED_SK as string,",
+				"          SPECIES_NAME as string,",
+				"          PRIMARY_BREED_NAME as string,",
+				"          SECONDARY_BREED_NAME as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_LOAD_DATE as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          BREED_SK,",
+				"          SPECIES_NAME,",
+				"          PRIMARY_BREED_NAME,",
+				"          SECONDARY_BREED_NAME,",
+				"          DI_JOB_ID,",
+				"          DI_LOAD_DATE",
+				"     )) ~> sink1"
 			]
 		}
 	}
