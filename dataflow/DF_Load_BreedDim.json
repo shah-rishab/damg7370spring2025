@@ -136,11 +136,11 @@
 				"     stageInsert: true,",
 				"     mapColumn(",
 				"          BREED_SK,",
-				"          SPECIES_NAME = SPECIES,",
-				"          PRIMARY_BREED_NAME = PRIMARY_BREED,",
-				"          SECONDARY_BREED_NAME = SECONDARY_BREED,",
+				"          SPECIES_NAME,",
+				"          PRIMARY_BREED_NAME,",
+				"          SECONDARY_BREED_NAME,",
 				"          DI_JOB_ID,",
-				"          DI_LOAD_DATE = DI_CreatedDate",
+				"          DI_LOAD_DATE",
 				"     )) ~> sink1"
 			]
 		}
