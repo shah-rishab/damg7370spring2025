@@ -16,6 +16,13 @@
 						"referenceName": "SourceBreedDim",
 						"type": "DatasetReference"
 					},
+					"name": "BreedDimMaxId"
+				},
+				{
+					"dataset": {
+						"referenceName": "SourceBreedDim",
+						"type": "DatasetReference"
+					},
 					"name": "sourceBreedDim"
 				}
 			],
@@ -26,6 +33,12 @@
 				},
 				{
 					"name": "aggregateBreedKeys"
+				},
+				{
+					"name": "jointoTarget"
+				},
+				{
+					"name": "filterExistingRows"
 				}
 			],
 			"scriptLines": [
@@ -50,8 +63,23 @@
 				"     allowSchemaDrift: false,",
 				"     validateSchema: false,",
 				"     query: 'SELECT NVL(MAX(BREED_SK),0) as MaxBreedSK FROM BREED_DIM',",
-				"     format: 'query') ~> sourceBreedDim",
-				"sourceStg, sourceBreedDim join(1==1,",
+				"     format: 'query') ~> BreedDimMaxId",
+				"source(output(",
+				"          BREED_SK as string,",
+				"          SPECIES_NAME as string,",
+				"          PRIMARY_BREED_NAME as string,",
+				"          SECONDARY_BREED_NAME as string,",
+				"          START_DATE as string,",
+				"          END_DATE as string,",
+				"          IS_CURRENT as string,",
+				"          BREED_DK as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_LOAD_DATE as string",
+				"     ),",
+				"     allowSchemaDrift: false,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> sourceBreedDim",
+				"sourceStg, BreedDimMaxId join(1==1,",
 				"     joinType:'cross',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
@@ -59,7 +87,16 @@
 				"SourceDataWithSK aggregate(groupBy(SPECIES,",
 				"          PRIMARY_BREED,",
 				"          SECONDARY_BREED,",
-				"          MAXBREEDSK)) ~> aggregateBreedKeys"
+				"          MAXBREEDSK),",
+				"     Count_Row = count(LICENSE_NUMBER)) ~> aggregateBreedKeys",
+				"aggregateBreedKeys, sourceBreedDim join(PRIMARY_BREED == PRIMARY_BREED_NAME",
+				"     && SECONDARY_BREED == SECONDARY_BREED_NAME",
+				"     && SPECIES == SPECIES_NAME,",
+				"     joinType:'left',",
+				"     matchType:'exact',",
+				"     ignoreSpaces: false,",
+				"     broadcast: 'auto')~> jointoTarget",
+				"jointoTarget filter(isNull(SPECIES_NAME)&&isNull(PRIMARY_BREED_NAME)&&isNull(SECONDARY_BREED_NAME)) ~> filterExistingRows"
 			]
 		}
 	}
