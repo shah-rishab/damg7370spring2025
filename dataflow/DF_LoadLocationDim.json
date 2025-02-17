@@ -15,10 +15,10 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "ds_LocationDim",
+						"referenceName": "LocationDimTable",
 						"type": "DatasetReference"
 					},
-					"name": "sinkLocationDim"
+					"name": "sink1"
 				}
 			],
 			"transformations": [
@@ -49,7 +49,7 @@
 				"     stepValue: 1L) ~> surrogateKey",
 				"surrogateKey derive(DI_CreatedDate = currentTimestamp(),",
 				"          DI_JobID = $JobID) ~> derivedColumn1",
-				"derivedColumn1 sink(allowSchemaDrift: false,",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          LOCATION_SK as string,",
@@ -58,7 +58,7 @@
 				"          STATE_ABBR as string,",
 				"          ZIPCODE as string,",
 				"          DI_JOB_ID as string,",
-				"          DI_LOAD_DATE as string",
+				"          DI_CREATED_DATE as string",
 				"     ),",
 				"     deletable:false,",
 				"     insertable:true,",
@@ -75,8 +75,8 @@
 				"          STATE_ABBR = state_abbr,",
 				"          ZIPCODE = zipcode,",
 				"          DI_JOB_ID = DI_JobID,",
-				"          DI_LOAD_DATE = DI_CreatedDate",
-				"     )) ~> sinkLocationDim"
+				"          DI_CREATED_DATE = DI_CreatedDate",
+				"     )) ~> sink1"
 			]
 		}
 	}
