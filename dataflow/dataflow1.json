@@ -148,7 +148,7 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> joinBreedDim",
-				"joinBreedDim, sourceDateDim join(LICENSE_ISSUE_DATE == DATE_DIM_SK,",
+				"joinBreedDim, sourceDateDim join(LICENSE_ISSUE_DATE == DT,",
 				"     joinType:'inner',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
