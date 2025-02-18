@@ -40,7 +40,15 @@
 					"name": "FctMaxID"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_PetLicenseFactTable",
+						"type": "DatasetReference"
+					},
+					"name": "sink1"
+				}
+			],
 			"transformations": [
 				{
 					"name": "joinLocationDim"
@@ -66,6 +74,9 @@
 				}
 			],
 			"scriptLines": [
+				"parameters{",
+				"     JobID as string (\"10\")",
+				"}",
 				"source(output(",
 				"          LICENSE_ISSUE_DATE as string,",
 				"          LICENSE_NUMBER as string,",
@@ -120,9 +131,12 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     format: 'table') ~> sourceDateDim",
-				"source(allowSchemaDrift: true,",
+				"source(output(",
+				"          MAX_PET_LIC_SK as decimal(38,0)",
+				"     ),",
+				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     query: 'select nvl(max(PET_LIC_SK),0) as pet_lic_sk FROM PET_LIC_FCT',",
+				"     query: 'select NVL(max(PET_LIC_SK),0) as max_pet_lic_sk FROM PET_LIC_FCT',",
 				"     format: 'query') ~> FctMaxID",
 				"sourceStg, sourceLocationDim join(ZIP_CODE == ZIPCODE,",
 				"     joinType:'inner',",
@@ -147,16 +161,38 @@
 				"select1 keyGenerate(output(Pet_License_Fct_SK as long),",
 				"     startAt: 1L,",
 				"     stepValue: 1L) ~> surrogateKey1",
-				"surrogateKey1 derive(Pet_License_Fct_SK = ERROR_FUNCTION('')) ~> derivedColumn1",
+				"surrogateKey1 derive(Pet_License_Fct_SK = toInteger(Pet_License_Fct_SK + MAX_PET_LIC_SK),",
+				"          DI_Job_ID = $JobID,",
+				"          DI_Load_Date = currentTimestamp()) ~> derivedColumn1",
 				"joinFctMaxID select(mapColumn(",
 				"          LICENSE_ISSUE_DATE,",
 				"          LICENSE_NUMBER,",
 				"          LOCATION_SK,",
 				"          BREED_SK,",
-				"          DT",
+				"          DT,",
+				"          MAX_PET_LIC_SK",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> select1"
+				"     skipDuplicateMapOutputs: false) ~> select1",
+				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          PET_LIC_SK as string,",
+				"          LIC_NUM as string,",
+				"          DATE_SK as string,",
+				"          LOCATION_SK as string,",
+				"          BREED_SK as string,",
+				"          DI_JOB_ID as string,",
+				"          DI_LOAD_DATE as string",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true) ~> sink1"
 			]
 		}
 	}
