@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "DF_PetLicFct",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
@@ -46,7 +46,7 @@
 						"referenceName": "ds_PetLicenseFactTable",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "sinktoSnowflake"
 				}
 			],
 			"transformations": [
@@ -64,10 +64,10 @@
 					"name": "joinFctMaxID"
 				},
 				{
-					"name": "surrogateKey1"
+					"name": "surrogateKey"
 				},
 				{
-					"name": "derivedColumn1"
+					"name": "derivedColumn"
 				},
 				{
 					"name": "select1"
@@ -162,10 +162,10 @@
 				"     broadcast: 'auto')~> joinFctMaxID",
 				"select1 keyGenerate(output(Pet_License_Fct_SK as long),",
 				"     startAt: 1L,",
-				"     stepValue: 1L) ~> surrogateKey1",
-				"surrogateKey1 derive(Pet_License_Fct_SK = toInteger(Pet_License_Fct_SK + MAX_PET_LIC_SK),",
+				"     stepValue: 1L) ~> surrogateKey",
+				"surrogateKey derive(Pet_License_Fct_SK = toInteger(Pet_License_Fct_SK + MAX_PET_LIC_SK),",
 				"          DI_Job_ID = $JobID,",
-				"          DI_Load_Date = currentTimestamp()) ~> derivedColumn1",
+				"          DI_Load_Date = currentTimestamp()) ~> derivedColumn",
 				"joinFctMaxID select(mapColumn(",
 				"          LICENSE_ISSUE_DATE,",
 				"          LICENSE_NUMBER,",
@@ -176,7 +176,7 @@
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
 				"     skipDuplicateMapOutputs: false) ~> select1",
-				"derivedColumn1 sink(allowSchemaDrift: true,",
+				"derivedColumn sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          PET_LIC_SK as string,",
@@ -203,7 +203,7 @@
 				"          BREED_SK,",
 				"          DI_JOB_ID = DI_Job_ID,",
 				"          DI_LOAD_DATE = DI_Load_Date",
-				"     )) ~> sink1"
+				"     )) ~> sinktoSnowflake"
 			]
 		}
 	}
