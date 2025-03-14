@@ -1,0 +1,41 @@
+{
+	"name": "ds_name_basics_unflattened",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "IS_Snowflake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "SnowflakeV2Table",
+		"schema": [
+			{
+				"name": "NCONST",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "PRIMARYNAME",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "BIRTHYEAR",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "DEATHYEAR",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "PRIMARYPROFESSION",
+				"type": "VARCHAR"
+			},
+			{
+				"name": "KNOWNFORTITLES",
+				"type": "VARCHAR"
+			}
+		],
+		"typeProperties": {
+			"schema": "DEMO_SF",
+			"table": "NAME_BASICS_UNFLATTENED"
+		}
+	}
+}
