@@ -37,6 +37,8 @@
 			{
 				"name": "DF_PetLicFct",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "DF_LoadLocationDim",
@@ -74,6 +76,8 @@
 			{
 				"name": "DF_Load_BreedDim",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "DF_DataCleaning_SeattlePetLicense",
@@ -108,6 +112,8 @@
 			{
 				"name": "DF_LoadLocationDim",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [
 					{
 						"activity": "DF_Load_BreedDim",
@@ -142,6 +148,8 @@
 			{
 				"name": "DF_DataCleaning_SeattlePetLicense",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -171,7 +179,7 @@
 				"type": "ExecuteDataFlow",
 				"dependsOn": [],
 				"policy": {
-					"timeout": "0.12:00:00",
+					"timeout": "0.00:30:00",
 					"retry": 0,
 					"retryIntervalInSeconds": 30,
 					"secureOutput": false,
@@ -181,6 +189,32 @@
 				"typeProperties": {
 					"dataflow": {
 						"referenceName": "csv_to_rows_df",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "tsv_to_Snowflake",
+				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.00:30:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "tsv_to_Snowflake",
 						"type": "DataFlowReference"
 					},
 					"compute": {
