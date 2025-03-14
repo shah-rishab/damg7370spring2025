@@ -18,7 +18,7 @@
 						"referenceName": "ds_name_basics_flatten",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "sink"
 				}
 			],
 			"transformations": [
@@ -26,7 +26,7 @@
 					"name": "derivedColumn"
 				},
 				{
-					"name": "flatten2"
+					"name": "flatten"
 				}
 			],
 			"scriptLines": [
@@ -58,8 +58,8 @@
 				"          Load_Date",
 				"     ),",
 				"     skipDuplicateMapInputs: false,",
-				"     skipDuplicateMapOutputs: false) ~> flatten2",
-				"flatten2 sink(allowSchemaDrift: true,",
+				"     skipDuplicateMapOutputs: false) ~> flatten",
+				"flatten sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          NCONST as string,",
@@ -88,7 +88,7 @@
 				"          KNOWNFORTITLES = knownForTitles,",
 				"          JOB_ID = Job_ID,",
 				"          LOAD_DATE = Load_Date",
-				"     )) ~> sink1"
+				"     )) ~> sink"
 			]
 		}
 	}
