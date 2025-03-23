@@ -32,7 +32,7 @@
 						"referenceName": "ds_customer_stage",
 						"type": "DatasetReference"
 					},
-					"name": "sink1"
+					"name": "sink"
 				}
 			],
 			"transformations": [
@@ -151,7 +151,7 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     stageInsert: true) ~> sink1"
+				"     stageInsert: true) ~> sink"
 			]
 		}
 	}
