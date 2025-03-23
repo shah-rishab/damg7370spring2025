@@ -151,7 +151,15 @@
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     stageInsert: true) ~> sink"
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CUSTOMER_SK,",
+				"          CUSTOMER_ID = customerid,",
+				"          CUSTOMER_NAME = CustomerName,",
+				"          BILLTO = billTo,",
+				"          JOB_ID,",
+				"          LOAD_DATE",
+				"     )) ~> sink"
 			]
 		}
 	}
