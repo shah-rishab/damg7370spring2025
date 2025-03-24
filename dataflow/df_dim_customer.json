@@ -40,9 +40,6 @@
 					"name": "join"
 				},
 				{
-					"name": "aggregate"
-				},
-				{
 					"name": "join1"
 				},
 				{
@@ -96,12 +93,7 @@
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
 				"     broadcast: 'auto')~> join",
-				"join aggregate(groupBy(customerid,",
-				"          CustomerName,",
-				"          billTo,",
-				"          MAXCUSTOMERSK),",
-				"     Count_Row = count(customerid)) ~> aggregate",
-				"aggregate, sourceCustomerDim join(aggregate@customerid == sourceCustomerDim@CUSTOMERID,",
+				"join, sourceCustomerDim join(derivedColumn1@customerid == sourceCustomerDim@CUSTOMERID,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
@@ -114,9 +106,9 @@
 				"          JOB_ID = $DI_Job_ID,",
 				"          LOAD_DATE = currentTimestamp()) ~> derivedColumn",
 				"join1 select(mapColumn(",
-				"          customerid = aggregate@customerid,",
-				"          CustomerName = aggregate@CustomerName,",
-				"          billTo = aggregate@billTo,",
+				"          customerid = derivedColumn1@customerid,",
+				"          CustomerName = customerpart1@CustomerName,",
+				"          billTo = customerpart1@billTo,",
 				"          CUSTOMER_SK,",
 				"          JOB_ID,",
 				"          LOAD_DATE,",
