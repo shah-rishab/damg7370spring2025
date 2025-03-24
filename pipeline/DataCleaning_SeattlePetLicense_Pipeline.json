@@ -203,6 +203,8 @@
 			{
 				"name": "tsv_to_Snowflake",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.00:30:00",
@@ -223,8 +225,44 @@
 					},
 					"traceLevel": "Fine"
 				}
+			},
+			{
+				"name": "df_dim_customer",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_dim_customer",
+						"type": "DataFlowReference",
+						"parameters": {
+							"DI_Job_ID": {
+								"value": "'@{pipeline().RunId}'",
+								"type": "Expression"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
+		"parameters": {
+			"DI_Job_ID": {
+				"type": "string",
+				"defaultValue": "@pipeline().RunId"
+			}
+		},
 		"annotations": []
 	}
 }
