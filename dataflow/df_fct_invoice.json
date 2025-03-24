@@ -228,10 +228,26 @@
 				"     insertable:true,",
 				"     updateable:false,",
 				"     upsertable:true,",
+				"     keys:['INVOICEID'],",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
-				"     stageInsert: true) ~> sink"
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          INVOICE_SK,",
+				"          INVOICEID,",
+				"          CUSTOMERID,",
+				"          INVOICEDATE,",
+				"          SHIPTO,",
+				"          SHIPTO_CITY,",
+				"          SHIPTO_COUNTRY,",
+				"          SALESPERSONPERSONID,",
+				"          SALESPERSONNAME,",
+				"          TOTAL_PRODUCT_CNT,",
+				"          TOTAL,",
+				"          JOB_ID,",
+				"          LOAD_DATE",
+				"     )) ~> sink"
 			]
 		}
 	}
