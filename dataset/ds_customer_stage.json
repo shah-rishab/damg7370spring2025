@@ -15,13 +15,13 @@
 				"scale": 0
 			},
 			{
-				"name": "CUSTOMER_ID",
+				"name": "CUSTOMERID",
 				"type": "NUMBER",
 				"precision": 38,
 				"scale": 0
 			},
 			{
-				"name": "CUSTOMER_NAME",
+				"name": "CUSTOMERNAME",
 				"type": "VARCHAR"
 			},
 			{
