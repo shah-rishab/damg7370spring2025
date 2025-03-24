@@ -1,0 +1,66 @@
+{
+	"name": "df_CustomerStage_To_DimCustomer",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_customer_stage",
+						"type": "DatasetReference"
+					},
+					"name": "source"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_dimcustomer",
+						"type": "DatasetReference"
+					},
+					"name": "sink"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          CUSTOMER_SK as decimal(38,0),",
+				"          CUSTOMERID as decimal(38,0),",
+				"          CUSTOMERNAME as string,",
+				"          BILLTO as string,",
+				"          JOB_ID as string,",
+				"          LOAD_DATE as date",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     format: 'table') ~> source",
+				"source sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          CUSTOMER_SK as decimal(38,0),",
+				"          CUSTOMER_ID as decimal(38,0),",
+				"          CUSTOMER_NAME as string,",
+				"          BILLTO as string,",
+				"          JOB_ID as string,",
+				"          LOAD_DATE as date",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          CUSTOMER_SK,",
+				"          CUSTOMER_ID = CUSTOMERID,",
+				"          CUSTOMER_NAME = CUSTOMERNAME,",
+				"          BILLTO,",
+				"          JOB_ID,",
+				"          LOAD_DATE",
+				"     )) ~> sink"
+			]
+		}
+	}
+}
