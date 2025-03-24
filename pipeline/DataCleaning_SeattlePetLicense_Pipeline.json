@@ -229,6 +229,8 @@
 			{
 				"name": "df_dim_customer",
 				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
 				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
@@ -255,14 +257,64 @@
 					},
 					"traceLevel": "Fine"
 				}
+			},
+			{
+				"name": "df_invoice_to_stage",
+				"type": "ExecuteDataFlow",
+				"state": "Inactive",
+				"onInactiveMarkAs": "Succeeded",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_invoice_to_stage",
+						"type": "DataFlowReference"
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
+			},
+			{
+				"name": "df_fct_invoice",
+				"type": "ExecuteDataFlow",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"dataflow": {
+						"referenceName": "df_fct_invoice",
+						"type": "DataFlowReference",
+						"parameters": {
+							"Job_ID": {
+								"value": "'@{pipeline().RunId}'",
+								"type": "Expression"
+							}
+						}
+					},
+					"compute": {
+						"coreCount": 8,
+						"computeType": "General"
+					},
+					"traceLevel": "Fine"
+				}
 			}
 		],
-		"parameters": {
-			"DI_Job_ID": {
-				"type": "string",
-				"defaultValue": "@pipeline().RunId"
-			}
-		},
 		"annotations": []
 	}
 }

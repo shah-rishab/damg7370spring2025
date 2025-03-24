@@ -1,5 +1,5 @@
 {
-	"name": "dataflow1",
+	"name": "df_fct_invoice",
 	"properties": {
 		"type": "MappingDataFlow",
 		"typeProperties": {
