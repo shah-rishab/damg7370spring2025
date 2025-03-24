@@ -1,0 +1,78 @@
+{
+	"name": "dataflow2",
+	"properties": {
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [
+				{
+					"dataset": {
+						"referenceName": "ds_invoices",
+						"type": "DatasetReference"
+					},
+					"name": "source"
+				}
+			],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ds_invoice_stage",
+						"type": "DatasetReference"
+					},
+					"name": "sink"
+				}
+			],
+			"transformations": [],
+			"scriptLines": [
+				"source(output(",
+				"          invoiceId as string,",
+				"          customerid as string,",
+				"          invoiceDate as string,",
+				"          ShipTo as string,",
+				"          ShipTo_City as string,",
+				"          ShipTo_Country as string,",
+				"          SalespersonPersonID as string,",
+				"          SalespersonName as string,",
+				"          total_product_cnt as string,",
+				"          Total as string",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     ignoreNoFilesFound: false) ~> source",
+				"source sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     input(",
+				"          INVOICEID as decimal(38,0),",
+				"          CUSTOMERID as decimal(38,0),",
+				"          INVOICEDATE as date,",
+				"          SHIPTO as string,",
+				"          SHIPTO_CITY as string,",
+				"          SHIPTO_COUNTRY as string,",
+				"          SALESPERSONPERSONID as decimal(38,0),",
+				"          SALESPERSONNAME as string,",
+				"          TOTAL_PRODUCT_CNT as decimal(38,0),",
+				"          TOTAL as double",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     stageInsert: true,",
+				"     mapColumn(",
+				"          SHIPTO = ShipTo,",
+				"          SHIPTO_CITY = ShipTo_City,",
+				"          SHIPTO_COUNTRY = ShipTo_Country,",
+				"          SALESPERSONNAME = SalespersonName,",
+				"          INVOICEID = invoiceId,",
+				"          CUSTOMERID = customerid,",
+				"          INVOICEDATE = invoiceDate,",
+				"          SALESPERSONPERSONID = SalespersonPersonID,",
+				"          TOTAL_PRODUCT_CNT = total_product_cnt,",
+				"          TOTAL = Total",
+				"     )) ~> sink"
+			]
+		}
+	}
+}
