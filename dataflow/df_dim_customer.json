@@ -101,7 +101,7 @@
 				"          billTo,",
 				"          MAXCUSTOMERSK),",
 				"     Count_Row = count(customerid)) ~> aggregate",
-				"aggregate, sourceCustomerDim join(aggregate@customerid == CUSTOMER_ID,",
+				"aggregate, sourceCustomerDim join(aggregate@customerid == sourceCustomerDim@CUSTOMERID,",
 				"     joinType:'left',",
 				"     matchType:'exact',",
 				"     ignoreSpaces: false,",
