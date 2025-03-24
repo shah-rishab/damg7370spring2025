@@ -75,9 +75,6 @@
 					"name": "select2"
 				},
 				{
-					"name": "AlterRow1"
-				},
-				{
 					"name": "select3"
 				}
 			],
@@ -186,8 +183,6 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select2",
-				"select2 alterRow(insertIf(isNull(INVOICEID)),",
-				"     updateIf(!isNull(INVOICEID))) ~> AlterRow1",
 				"split1@CustomerIDNotFound select(mapColumn(",
 				"          INVOICEID,",
 				"          CUSTOMERID,",
@@ -236,7 +231,7 @@
 				"          TOTAL_PRODUCT_CNT,",
 				"          TOTAL",
 				"     )) ~> LoadIntoParkStage",
-				"AlterRow1 sink(allowSchemaDrift: true,",
+				"select2 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          INVOICE_SK as decimal(38,0),",
@@ -256,8 +251,7 @@
 				"     deletable:false,",
 				"     insertable:true,",
 				"     updateable:false,",
-				"     upsertable:true,",
-				"     keys:['INVOICEID'],",
+				"     upsertable:false,",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
