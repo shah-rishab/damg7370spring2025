@@ -76,6 +76,9 @@
 				},
 				{
 					"name": "select3"
+				},
+				{
+					"name": "AlterRow1"
 				}
 			],
 			"scriptLines": [
@@ -197,6 +200,8 @@
 				"     ),",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true) ~> select3",
+				"select2 alterRow(updateIf(isNull(CUSTOMERID)),",
+				"     insertIf(!isNull(CUSTOMERID))) ~> AlterRow1",
 				"select3 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
@@ -231,7 +236,7 @@
 				"          TOTAL_PRODUCT_CNT,",
 				"          TOTAL",
 				"     )) ~> LoadIntoParkStage",
-				"select2 sink(allowSchemaDrift: true,",
+				"AlterRow1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          INVOICE_SK as decimal(38,0),",
@@ -249,10 +254,10 @@
 				"          LOAD_DATE as date",
 				"     ),",
 				"     deletable:false,",
-				"     insertable:true,",
+				"     insertable:false,",
 				"     updateable:false,",
 				"     upsertable:true,",
-				"     keys:['INVOICEID'],",
+				"     keys:['CUSTOMERID'],",
 				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
 				"     skipDuplicateMapOutputs: true,",
