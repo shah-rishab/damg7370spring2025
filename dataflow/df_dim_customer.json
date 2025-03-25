@@ -6,7 +6,7 @@
 			"sources": [
 				{
 					"dataset": {
-						"referenceName": "ds_customer_part_1",
+						"referenceName": "ds_customer_part_2",
 						"type": "DatasetReference"
 					},
 					"name": "customerpart1"
